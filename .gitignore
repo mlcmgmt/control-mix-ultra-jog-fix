@@ -1,0 +1,6 @@
+# generated firmware images, captures, and Python cache
+firmware_*.bin
+*.csv
+*.log
+__pycache__/
+.pytest_cache/

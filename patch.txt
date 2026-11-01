@@ -1,0 +1,49 @@
+DJControl Mix Ultra patch groups
+================================
+
+All offsets are file offsets. Add 0x08000000 for the flash address.
+
+1. Jog ring gates (default)
+---------------------------
+0x00608D  D9 -> E0   left ring gate
+0x0060B3  D9 -> E0   right ring gate
+
+The Thumb instruction at each address changes from `bls` to `b`, so slow
+encoder edges take the send path instead of being dropped.
+
+2. Pitch fader dead zones
+-------------------------
+0x00B75A  80 -> 40   left pitch fader
+0x00B75B  80 -> 40   right pitch fader
+
+These are entries 4 and 5 of the 14-byte dead-zone table at 0x0800B756.
+The pitch faders send 14-bit CC8 (MSB) plus CC40 (LSB).
+
+3. Dead-zone calibration for the other controls
+-----------------------------------------------
+0x00B756  80 -> 60   crossfader
+0x00B757  80 -> 60   master
+0x00B758  80 -> 60   channel volume 1
+0x00B759  80 -> 60   channel volume 2
+0x00B75C  80 -> 60   filter 1
+0x00B75D  80 -> 60   filter 2
+0x00B75E  80 -> 60   low EQ 1
+0x00B75F  80 -> 60   low EQ 2
+0x00B760  80 -> 60   mid EQ 1
+0x00B761  80 -> 60   mid EQ 2
+0x00B762  80 -> 60   high EQ 1
+0x00B763  80 -> 60   high EQ 2
+
+The pitch entries at 0x00B75A/B are intentionally excluded from this group, so
+the two groups can be selected independently.
+
+Combined images (verified hashes)
+---------------------------------
+stock                7aa5453680753f725d21b8c20ad3bc32187dcfc17ab27632e9fd48de6295edd8
+jog                  b5f497cf9f69b89aba6ecf30e44b2e4565b81d012f67dfaddc7eaca7fe343087
+pitch                21ef8571b84e2696d1966dd1b2fdedce928167062e95cd99b5ab17fcc71df58a
+deadzone             ffa95aea4b7c43746386a4ce55b3da61d6c559c2e8ce7e05629ff6c33ebc35a9
+jog + pitch          b2afc82a68288d4a15e63b5e417202c7ad302989729837e94d1f4cf052469b7f
+jog + deadzone       a2bb08afed2f50054802d59e4633c0516c88c6098965541ffbfcfb0c50dfb9e0
+pitch + deadzone     fbd9c76e5d1a5d584635273cf9c59c6d5376eea7ce03c6c2579764b0f09f0836
+all three            0eb6a344f93acd8383968024c4476319292053e60845511d28e917af2ffd13a3
